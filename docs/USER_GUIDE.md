@@ -25,7 +25,9 @@ A complete guide to using and configuring your PiKVM Dashboard.
 
 ### First Launch
 
-When you first access the dashboard at `http://<your-pikvm-ip>/dashboard`, the Setup Wizard will automatically launch to guide you through the initial configuration.
+When you first access the dashboard at `https://<your-pikvm-ip>/pikvm-dashboard.html`, the Setup Wizard will automatically launch to guide you through the initial configuration.
+
+> **Note**: PiKVM uses HTTPS with a self-signed certificate by default. Your browser may show a security warning - this is normal. Click "Advanced" and proceed to the site.
 
 ### Setup Wizard Steps
 
@@ -422,3 +424,4 @@ This removes icon files that are no longer assigned to any PC.
 ---
 
 *Happy computing! 🖥️*
+
