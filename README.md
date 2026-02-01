@@ -37,6 +37,13 @@ chmod +x install.sh
 sudo ./install.sh
 ```
 
+## 📚 Documentation
+
+- [User Guide](docs/USER_GUIDE.md) - Complete guide to using the dashboard
+- [Troubleshooting](docs/TROUBLESHOOTING.md) - Common issues and solutions
+- [FAQ](docs/FAQ.md) - Frequently asked questions
+- [Beta Testing Checklist](BETA_TESTING_CHECKLIST.md) - For testers
+
 ## 🚀 Access
 
 After installation, access your dashboard at:
@@ -159,3 +166,4 @@ MIT License - See [LICENSE](LICENSE) file for details.
 ---
 
 Made with ❤️ by [DanCue44](https://github.com/DanCue44)
+
