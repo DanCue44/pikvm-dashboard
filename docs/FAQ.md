@@ -16,7 +16,7 @@ No, this is an independent community project that works alongside PiKVM. It uses
 
 ### Does this replace the standard PiKVM interface?
 
-No, the dashboard runs alongside the standard PiKVM interface. You can still access the original interface at `http://<your-pikvm-ip>/` while the dashboard is available at `http://<your-pikvm-ip>/dashboard`.
+No, the dashboard runs alongside the standard PiKVM interface. You can still access the original interface at `https://<your-pikvm-ip>/` while the dashboard is available at `https://<your-pikvm-ip>/pikvm-dashboard.html`.
 
 ### What PiKVM versions are supported?
 
@@ -243,7 +243,7 @@ The dashboard requires PiKVM authentication. This cannot be bypassed as it's nee
 
 ### Is the connection encrypted?
 
-If you access PiKVM via HTTPS, all dashboard communication is encrypted. The default PiKVM setup uses a self-signed certificate.
+Yes, PiKVM uses HTTPS by default, so all dashboard communication is encrypted. PiKVM uses a self-signed certificate, which may trigger a browser warning on first visit - this is normal and safe to accept.
 
 ---
 
@@ -311,3 +311,4 @@ If your question isn't answered here:
 ---
 
 *Last updated: February 2026*
+
