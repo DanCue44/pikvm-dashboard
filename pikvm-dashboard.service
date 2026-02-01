@@ -1,0 +1,19 @@
+[Unit]
+Description=PiKVM Dashboard Backend Service
+After=network.target kvmd.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/lib/pikvm-dashboard
+ExecStart=/var/lib/pikvm-dashboard/venv/bin/python /usr/local/bin/pikvm_dashboard_service.py
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=pikvm-dashboard
+
+[Install]
+WantedBy=multi-user.target
