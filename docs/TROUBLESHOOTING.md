@@ -31,11 +31,24 @@ Common issues and their solutions.
 rw
 
 # Then run the installer
-curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
+sudo bash install.sh
 
 # Return to read-only mode after (optional, for security)
 ro
 ```
+
+### Fresh install fails with "requires interactive mode"
+
+**Symptom**: Error message about needing interactive mode for credentials
+
+**Solution**: Fresh installs require you to enter your PiKVM credentials, which can't be done when piping the script. Download and run interactively:
+
+```bash
+curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh
+sudo bash install.sh
+```
+
+> **Note**: The one-liner (`curl | sudo bash`) only works for **updates** where credentials are already saved.
 
 ### "Permission denied" errors
 
@@ -541,3 +554,5 @@ If your issue isn't covered here:
 ---
 
 *Last updated: February 2026*
+
+
