@@ -49,8 +49,10 @@ sudo ./install.sh
 After installation, access your dashboard at:
 
 ```
-http://<your-pikvm-ip>/dashboard
+https://<your-pikvm-ip>/pikvm-dashboard.html
 ```
+
+> **Note**: PiKVM uses HTTPS with a self-signed certificate. Your browser may show a security warning - click "Advanced" and proceed to accept the certificate.
 
 ## 📋 Requirements
 
@@ -63,7 +65,7 @@ http://<your-pikvm-ip>/dashboard
 
 - Dashboard HTML interface (`/opt/pikvm-dashboard/`)
 - Python backend service (`pikvm-dashboard.service`)
-- Nginx configuration for `/dashboard` route
+- Nginx serves dashboard via PiKVM's web root
 - Automatic service startup on boot
 
 ## ⚙️ Configuration
@@ -166,4 +168,5 @@ MIT License - See [LICENSE](LICENSE) file for details.
 ---
 
 Made with ❤️ by [DanCue44](https://github.com/DanCue44)
+
 
