@@ -21,20 +21,25 @@ A powerful, customizable web dashboard for managing multiple PCs through your Pi
 - **Browser Notifications** - Get notified of completed actions
 - **Responsive Design** - Works on desktop, tablet, and mobile
 
-## 📦 Quick Install
+## 📦 Installation
 
-SSH into your PiKVM and run:
+### Update Existing Install
+
+If you already have the dashboard installed, you can update with a single command:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
 ```
 
-Or download and review first:
+This will update the files while keeping your settings and data.
+
+### Fresh Install
+
+For a new installation, run interactively (required for entering credentials):
 
 ```bash
 curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh
-chmod +x install.sh
-sudo ./install.sh
+sudo bash install.sh
 ```
 
 ## 📚 Documentation
@@ -168,5 +173,6 @@ MIT License - See [LICENSE](LICENSE) file for details.
 ---
 
 Made with ❤️ by [DanCue44](https://github.com/DanCue44)
+
 
 
