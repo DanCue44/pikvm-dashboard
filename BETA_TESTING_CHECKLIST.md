@@ -27,8 +27,10 @@ sudo ./install.sh
 
 After installation, access the dashboard at:
 ```
-http://<your-pikvm-ip>/dashboard
+https://<your-pikvm-ip>/pikvm-dashboard.html
 ```
+
+> **Note**: PiKVM uses HTTPS with a self-signed certificate. Your browser may show a security warning - click "Advanced" and proceed to accept the certificate.
 
 ---
 
@@ -298,3 +300,4 @@ Thank you for helping test the PiKVM Dashboard! Your feedback is invaluable in m
 If you find this project useful, consider supporting its development:
 - ⭐ Star the repo on GitHub
 - 💖 Support on Patreon: https://www.patreon.com/c/DanCue44
+
