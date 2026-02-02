@@ -36,10 +36,20 @@ Yes, the dashboard is completely free and open source. If you find it useful, yo
 
 ### How do I install the dashboard?
 
-SSH into your PiKVM and run:
+**For a fresh install**, SSH into your PiKVM and run interactively:
+```bash
+curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh
+sudo bash install.sh
+```
+
+This is required for fresh installs because you need to enter your PiKVM credentials.
+
+**For updates**, you can use the one-liner:
 ```bash
 curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
 ```
+
+This will use your existing saved credentials.
 
 ### Do I need to be in read-write mode?
 
@@ -311,4 +321,5 @@ If your question isn't answered here:
 ---
 
 *Last updated: February 2026*
+
 
