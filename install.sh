@@ -3,8 +3,12 @@
 # PiKVM Control Dashboard - Automated Installer
 # This script installs the complete dashboard including backend service
 #
-# Usage: curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
-# Or:    sudo bash install.sh
+# Usage for UPDATES (existing install):
+#   curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
+#
+# Usage for FRESH INSTALL (requires interactive mode for credentials):
+#   curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh
+#   sudo bash install.sh
 #
 
 set -e  # Exit on error
@@ -189,48 +193,89 @@ install_dashboard() {
     echo "  - Nginx authentication exception"
     echo
     
-    # Confirm installation
-    read -p "Do you want to continue? (y/n) " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        echo -e "${YELLOW}Installation cancelled.${NC}"
-        exit 0
+    # Check if running interactively
+    if [ -t 0 ]; then
+        # Interactive mode - ask for confirmation
+        read -p "Do you want to continue? (y/n) " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo -e "${YELLOW}Installation cancelled.${NC}"
+            exit 0
+        fi
+    else
+        # Non-interactive mode - auto-continue
+        echo -e "${CYAN}Non-interactive mode: auto-continuing...${NC}"
     fi
     
     echo
     
-    # Collect PiKVM credentials for dashboard auto-login
-    echo -e "${CYAN}PiKVM Credentials${NC}"
-    echo "The dashboard needs your PiKVM credentials to authenticate API requests."
-    echo
-    
-    # Loop until credentials are valid
+    # Check for existing credentials in config.json
+    EXISTING_CONFIG="$DATA_PATH/config.json"
     CREDS_VALID=false
-    while [ "$CREDS_VALID" = false ]; do
-        read -p "Enter PiKVM username (default: admin): " PIKVM_USER
-        PIKVM_USER=${PIKVM_USER:-admin}
+    
+    if [ -f "$EXISTING_CONFIG" ]; then
+        # Try to extract existing credentials
+        PIKVM_USER=$(grep -o '"username": *"[^"]*"' "$EXISTING_CONFIG" 2>/dev/null | head -1 | cut -d'"' -f4)
+        PIKVM_PASS=$(grep -o '"password": *"[^"]*"' "$EXISTING_CONFIG" 2>/dev/null | head -1 | cut -d'"' -f4)
         
-        read -sp "Enter PiKVM password: " PIKVM_PASS
+        if [ -n "$PIKVM_USER" ] && [ -n "$PIKVM_PASS" ]; then
+            echo -e "${CYAN}Found existing credentials. Verifying...${NC}"
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -u "${PIKVM_USER}:${PIKVM_PASS}" https://localhost/api/auth/check -k 2>/dev/null)
+            
+            if [ "$HTTP_CODE" = "200" ]; then
+                echo -e "${GREEN}✓ Existing credentials valid${NC}"
+                CREDS_VALID=true
+            else
+                echo -e "${YELLOW}⚠ Existing credentials invalid, need new ones${NC}"
+            fi
+        fi
+    fi
+    
+    # If no valid credentials and non-interactive, fail gracefully
+    if [ "$CREDS_VALID" = false ] && [ ! -t 0 ]; then
+        echo
+        echo -e "${RED}ERROR: Fresh install requires interactive mode to enter credentials.${NC}"
+        echo
+        echo "Please run the installer interactively:"
+        echo "  curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh"
+        echo "  sudo bash install.sh"
+        echo
+        exit 1
+    fi
+    
+    # Collect PiKVM credentials if not already valid
+    if [ "$CREDS_VALID" = false ]; then
+        echo -e "${CYAN}PiKVM Credentials${NC}"
+        echo "The dashboard needs your PiKVM credentials to authenticate API requests."
         echo
         
-        if [ -z "$PIKVM_PASS" ]; then
-            echo -e "${RED}Error: Password cannot be empty${NC}"
-            continue
-        fi
-        
-        # Test credentials
-        echo -e "${CYAN}Testing credentials...${NC}"
-        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -u "${PIKVM_USER}:${PIKVM_PASS}" https://localhost/api/auth/check -k)
-        
-        if [ "$HTTP_CODE" = "200" ]; then
-            echo -e "${GREEN}✓ Credentials valid${NC}"
-            CREDS_VALID=true
-        else
-            echo -e "${RED}✗ Authentication failed (HTTP $HTTP_CODE)${NC}"
-            echo -e "${YELLOW}Please try again.${NC}"
+        # Loop until credentials are valid
+        while [ "$CREDS_VALID" = false ]; do
+            read -p "Enter PiKVM username (default: admin): " PIKVM_USER
+            PIKVM_USER=${PIKVM_USER:-admin}
+            
+            read -sp "Enter PiKVM password: " PIKVM_PASS
             echo
-        fi
-    done
+            
+            if [ -z "$PIKVM_PASS" ]; then
+                echo -e "${RED}Error: Password cannot be empty${NC}"
+                continue
+            fi
+            
+            # Test credentials
+            echo -e "${CYAN}Testing credentials...${NC}"
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -u "${PIKVM_USER}:${PIKVM_PASS}" https://localhost/api/auth/check -k)
+            
+            if [ "$HTTP_CODE" = "200" ]; then
+                echo -e "${GREEN}✓ Credentials valid${NC}"
+                CREDS_VALID=true
+            else
+                echo -e "${RED}✗ Authentication failed (HTTP $HTTP_CODE)${NC}"
+                echo -e "${YELLOW}Please try again.${NC}"
+                echo
+            fi
+        done
+    fi
     
     echo
 
@@ -520,13 +565,23 @@ if [ "$existing" -gt 0 ]; then
     echo
     echo "Found $existing component(s) already installed."
     echo
-    echo "What would you like to do?"
-    echo "  1) Reinstall (update files, keep data)"
-    echo "  2) Fresh Reinstall (update files, delete data)"
-    echo "  3) Uninstall (remove everything)"
-    echo "  4) Cancel"
-    echo
-    read -p "Enter your choice (1-4): " choice
+    
+    # Check if running interactively (stdin is a terminal)
+    if [ -t 0 ]; then
+        # Interactive mode - show menu
+        echo "What would you like to do?"
+        echo "  1) Reinstall (update files, keep data)"
+        echo "  2) Fresh Reinstall (update files, delete data)"
+        echo "  3) Uninstall (remove everything)"
+        echo "  4) Cancel"
+        echo
+        read -p "Enter your choice (1-4): " choice
+    else
+        # Non-interactive mode (piped) - default to reinstall
+        echo -e "${CYAN}Non-interactive mode detected. Defaulting to reinstall (update files, keep data)...${NC}"
+        echo
+        choice=1
+    fi
     
     case $choice in
         1)
@@ -570,3 +625,4 @@ else
 fi
 
 exit 0
+
