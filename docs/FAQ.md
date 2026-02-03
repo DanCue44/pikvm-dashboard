@@ -36,24 +36,16 @@ Yes, the dashboard is completely free and open source. If you find it useful, yo
 
 ### How do I install the dashboard?
 
-**For a fresh install**, SSH into your PiKVM and run interactively:
-```bash
-curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh
-sudo bash install.sh
-```
-
-This is required for fresh installs because you need to enter your PiKVM credentials.
-
-**For updates**, you can use the one-liner:
+SSH into your PiKVM and run:
 ```bash
 curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
 ```
 
-This will use your existing saved credentials.
+For first-time installs, the script will prompt you for your PiKVM credentials. For updates, it will use your saved credentials automatically.
 
 ### Do I need to be in read-write mode?
 
-Yes. Before installing, run `rw` to enable write mode. After installation, you can run `ro` to return to read-only mode.
+No, the installer handles this automatically. It will switch to read-write mode during installation.
 
 ### Can I install without internet access?
 
@@ -61,7 +53,7 @@ Yes, but you'll need to manually download the files and transfer them to your Pi
 
 ### How do I update to the latest version?
 
-Run the same installation command - it will update existing files:
+Run the same install command - it will detect the existing installation and update files while keeping your data:
 ```bash
 curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
 ```
@@ -321,5 +313,3 @@ If your question isn't answered here:
 ---
 
 *Last updated: February 2026*
-
-

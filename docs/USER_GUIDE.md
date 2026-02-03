@@ -424,4 +424,3 @@ This removes icon files that are no longer assigned to any PC.
 ---
 
 *Happy computing! 🖥️*
-

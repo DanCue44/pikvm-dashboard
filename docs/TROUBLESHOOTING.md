@@ -31,24 +31,21 @@ Common issues and their solutions.
 rw
 
 # Then run the installer
-sudo bash install.sh
+curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
 
 # Return to read-only mode after (optional, for security)
 ro
 ```
 
-### Fresh install fails with "requires interactive mode"
+### Fresh install fails with "No saved credentials found"
 
-**Symptom**: Error message about needing interactive mode for credentials
+**Symptom**: Error message about no saved credentials and no terminal available
 
-**Solution**: Fresh installs require you to enter your PiKVM credentials, which can't be done when piping the script. Download and run interactively:
+**Solution**: This only happens in environments without a terminal (e.g., automated scripts, cron jobs). Run the installer from an SSH session instead:
 
 ```bash
-curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh
-sudo bash install.sh
+curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
 ```
-
-> **Note**: The one-liner (`curl | sudo bash`) only works for **updates** where credentials are already saved.
 
 ### "Permission denied" errors
 
@@ -57,9 +54,6 @@ sudo bash install.sh
 **Solution**:
 ```bash
 # Make sure to run with sudo
-sudo bash install.sh
-
-# Or use sudo with curl
 curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
 ```
 
@@ -96,7 +90,7 @@ sudo pip3 install --upgrade pip
 sudo pip3 install aiohttp aiofiles
 
 # Restart installation
-sudo bash install.sh
+curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
 ```
 
 ---
@@ -554,5 +548,3 @@ If your issue isn't covered here:
 ---
 
 *Last updated: February 2026*
-
-
