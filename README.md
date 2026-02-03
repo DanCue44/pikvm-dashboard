@@ -56,7 +56,7 @@ PiKVM's authentication system always redirects to `/` after login, not to the pa
 
 Additionally, if you visit the dashboard URL without being logged in at all, the page will load in a broken state — you'll see the site title and menu button, but the PiKVM logo will be missing and the setup wizard won't appear. If this happens, click the broken logo image (it links to the main PiKVM interface), log in there, then navigate back to the dashboard.
 
-A feature request has been submitted to the PiKVM project to support redirect-back behavior ([pikvm/pikvm#1631](https://github.com/pikvm/pikvm/issues/1631)). Until this is addressed upstream, the workaround is to always log in to PiKVM first, then navigate to the dashboard.
+A feature request has been submitted to the PiKVM project to support redirect-back behavior ([pikvm/pikvm#1631](https://github.com/pikvm/pikvm/issues/1631)). Until this is addressed upstream, the workaround is to always log in to PiKVM first, then navigate to the dashboard. Note that PiKVM sessions stay active for long periods of time, so this is typically only an issue on first use or after clearing your browser data.
 
 ## 📋 Requirements
 

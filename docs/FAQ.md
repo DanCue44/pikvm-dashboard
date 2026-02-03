@@ -245,11 +245,11 @@ The dashboard requires PiKVM authentication. This cannot be bypassed as it's nee
 
 ### Why does logging in redirect me to the main PiKVM page instead of the dashboard?
 
-This is a known limitation of PiKVM's authentication system — it always redirects to `/` after login rather than back to the page you were trying to access. A feature request has been submitted upstream ([pikvm/pikvm#1631](https://github.com/pikvm/pikvm/issues/1631)). For now, log in to the main PiKVM interface first at `https://<your-pikvm-ip>/`, then navigate to `/pikvm-dashboard.html`.
+This is a known limitation of PiKVM's authentication system — it always redirects to `/` after login rather than back to the page you were trying to access. A feature request has been submitted upstream ([pikvm/pikvm#1631](https://github.com/pikvm/pikvm/issues/1631)). For now, log in to the main PiKVM interface first at `https://<your-pikvm-ip>/`, then navigate to `/pikvm-dashboard.html`. PiKVM sessions stay active for long periods of time, so this is typically only an issue on first use or after clearing your browser data.
 
 ### I just installed the dashboard but it looks blank — no setup wizard, missing logo. What's wrong?
 
-You're not logged into PiKVM yet. The dashboard needs an authenticated session to load its configuration and display the setup wizard. Without it, API calls fail silently and the page renders in an empty state. Click the broken logo image in the header (it links to the main PiKVM interface), log in there, then navigate back to the dashboard.
+You're not logged into PiKVM yet. The dashboard needs an authenticated session to load its configuration and display the setup wizard. Without it, API calls fail silently and the page renders in an empty state. Click the broken logo image in the header (it links to the main PiKVM interface), log in there, then navigate back to the dashboard. PiKVM sessions stay active for long periods of time, so this typically only happens on first use or after clearing your browser data.
 
 ### Is the connection encrypted?
 

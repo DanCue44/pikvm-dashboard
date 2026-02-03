@@ -110,7 +110,7 @@ curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/instal
 3. Navigate back to `https://<your-pikvm-ip>/pikvm-dashboard.html`
 4. The setup wizard should now appear on first launch, or the full dashboard if already configured
 
-**Tip**: Always log in to the main PiKVM web interface before visiting the dashboard. PiKVM's authentication currently redirects to `/` after login rather than back to your original URL, so logging in first avoids this issue entirely. See [pikvm/pikvm#1631](https://github.com/pikvm/pikvm/issues/1631) for the upstream feature request.
+**Tip**: Always log in to the main PiKVM web interface before visiting the dashboard. PiKVM's authentication currently redirects to `/` after login rather than back to your original URL, so logging in first avoids this issue entirely. PiKVM sessions stay active for long periods of time, so this is typically only an issue on first use or after clearing your browser data. See [pikvm/pikvm#1631](https://github.com/pikvm/pikvm/issues/1631) for the upstream feature request.
 
 ### Blank page or 404 error
 
