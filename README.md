@@ -46,7 +46,17 @@ After installation, access your dashboard at:
 https://<your-pikvm-ip>/pikvm-dashboard.html
 ```
 
+> **Important**: Log in to the main PiKVM web interface first before navigating to the dashboard. PiKVM's authentication will redirect you to its default page (`/`) after login rather than back to the dashboard URL. By logging in first at `https://<your-pikvm-ip>/`, you'll already be authenticated when you navigate to the dashboard.
+
 > **Note**: PiKVM uses HTTPS with a self-signed certificate. Your browser may show a security warning - click "Advanced" and proceed to accept the certificate.
+
+### Known Issue: Login Redirect
+
+PiKVM's authentication system always redirects to `/` after login, not to the page you originally navigated to. This means if you go directly to `/pikvm-dashboard.html` while logged out, you'll be prompted to log in but then redirected to the main PiKVM interface instead of the dashboard.
+
+Additionally, if you visit the dashboard URL without being logged in at all, the page will load in a broken state — you'll see the site title and menu button, but the PiKVM logo will be missing and the setup wizard won't appear. If this happens, click the broken logo image (it links to the main PiKVM interface), log in there, then navigate back to the dashboard.
+
+A feature request has been submitted to the PiKVM project to support redirect-back behavior ([pikvm/pikvm#1631](https://github.com/pikvm/pikvm/issues/1631)). Until this is addressed upstream, the workaround is to always log in to PiKVM first, then navigate to the dashboard.
 
 ## 📋 Requirements
 

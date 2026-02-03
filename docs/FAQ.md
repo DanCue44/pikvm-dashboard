@@ -243,6 +243,14 @@ Credentials are stored in your browser's localStorage and in the backend config.
 
 The dashboard requires PiKVM authentication. This cannot be bypassed as it's needed for API access.
 
+### Why does logging in redirect me to the main PiKVM page instead of the dashboard?
+
+This is a known limitation of PiKVM's authentication system — it always redirects to `/` after login rather than back to the page you were trying to access. A feature request has been submitted upstream ([pikvm/pikvm#1631](https://github.com/pikvm/pikvm/issues/1631)). For now, log in to the main PiKVM interface first at `https://<your-pikvm-ip>/`, then navigate to `/pikvm-dashboard.html`.
+
+### I just installed the dashboard but it looks blank — no setup wizard, missing logo. What's wrong?
+
+You're not logged into PiKVM yet. The dashboard needs an authenticated session to load its configuration and display the setup wizard. Without it, API calls fail silently and the page renders in an empty state. Click the broken logo image in the header (it links to the main PiKVM interface), log in there, then navigate back to the dashboard.
+
 ### Is the connection encrypted?
 
 Yes, PiKVM uses HTTPS by default, so all dashboard communication is encrypted. PiKVM uses a self-signed certificate, which may trigger a browser warning on first visit - this is normal and safe to accept.

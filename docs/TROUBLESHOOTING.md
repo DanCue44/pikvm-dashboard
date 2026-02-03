@@ -97,6 +97,21 @@ curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/instal
 
 ## Dashboard Not Loading
 
+### Dashboard loads but shows no content (missing logo, no setup wizard)
+
+**Symptom**: After a fresh install, visiting the dashboard shows a mostly blank page — you can see the site title and hamburger menu button, but the PiKVM logo is missing/broken and the setup wizard doesn't appear. The dashboard appears non-functional.
+
+**Cause**: You are not logged into PiKVM. The dashboard needs an authenticated session to load its configuration and display the setup wizard. Without authentication, API calls fail silently and the dashboard renders in an empty state.
+
+**Solution**:
+
+1. Click the broken/missing PiKVM logo in the header — this links to the main PiKVM interface
+2. Log in to PiKVM with your credentials at `https://<your-pikvm-ip>/`
+3. Navigate back to `https://<your-pikvm-ip>/pikvm-dashboard.html`
+4. The setup wizard should now appear on first launch, or the full dashboard if already configured
+
+**Tip**: Always log in to the main PiKVM web interface before visiting the dashboard. PiKVM's authentication currently redirects to `/` after login rather than back to your original URL, so logging in first avoids this issue entirely. See [pikvm/pikvm#1631](https://github.com/pikvm/pikvm/issues/1631) for the upstream feature request.
+
 ### Blank page or 404 error
 
 **Symptom**: Browser shows blank page or "Not Found"

@@ -19,12 +19,12 @@ The installer will prompt you for credentials on first install, or use saved cre
 
 ### Access the Dashboard
 
+> **Important**: Log in to the main PiKVM web interface first at `https://<your-pikvm-ip>/` before navigating to the dashboard. See [Known Issue: Login Redirect](README.md#known-issue-login-redirect) for details.
+
 After installation, access the dashboard at:
 ```
 https://<your-pikvm-ip>/pikvm-dashboard.html
 ```
-
-> **Note**: PiKVM uses HTTPS with a self-signed certificate. Your browser may show a security warning - click "Advanced" and proceed to accept the certificate.
 
 ---
 

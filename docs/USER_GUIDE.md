@@ -25,6 +25,10 @@ A complete guide to using and configuring your PiKVM Dashboard.
 
 ### First Launch
 
+> **Important**: Log in to the main PiKVM web interface at `https://<your-pikvm-ip>/` first before navigating to the dashboard. PiKVM's authentication currently redirects to its default page after login rather than back to your original URL ([pikvm/pikvm#1631](https://github.com/pikvm/pikvm/issues/1631)), so logging in first ensures you're already authenticated.
+>
+> If you visit the dashboard without logging in first, you'll see a mostly blank page — the site title and menu button will appear, but the PiKVM logo will be missing and the setup wizard won't launch. If this happens, click the broken logo image in the header to go to the main PiKVM interface, log in, then navigate back to the dashboard.
+
 When you first access the dashboard at `https://<your-pikvm-ip>/pikvm-dashboard.html`, the Setup Wizard will automatically launch to guide you through the initial configuration.
 
 > **Note**: PiKVM uses HTTPS with a self-signed certificate by default. Your browser may show a security warning - this is normal. Click "Advanced" and proceed to the site.
