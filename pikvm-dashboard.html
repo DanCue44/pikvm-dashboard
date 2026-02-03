@@ -20,8 +20,20 @@
             --bg-secondary: #ffffff;
             --bg-tertiary: #f5f5f5;
             --text-primary: #1e1e1e;
-            --text-secondary: #666666;
-            --border-color: #d0d0d0;
+            --text-secondary: #3a3a3a;
+            --border-color: #999999;
+        }
+
+        /* Wizard/Settings/Login/Modals always stay in dark mode regardless of theme */
+        .setup-wizard,
+        .login-container,
+        .modal {
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #2a2a2a;
+            --bg-tertiary: #1e1e1e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --border-color: #3a3a3a;
         }
 
         /* Login Form Styles */
@@ -358,6 +370,35 @@
             margin: 0 0 30px 0;
             color: var(--text-secondary);
         }
+        
+        /* Step 1 specific styles */
+        .step1-header {
+            position: relative;
+            padding-right: 220px;
+            margin-bottom: 20px;
+            min-height: 120px;
+        }
+        
+        .step1-header h2 {
+            margin-bottom: 10px;
+        }
+        
+        .step1-header p {
+            margin-bottom: 0;
+        }
+        
+        .step1-image {
+            position: absolute;
+            top: 0;
+            right: 0;
+            max-width: 200px;
+            width: 200px;
+            border-radius: 8px;
+        }
+        
+        .step1-content {
+            margin-top: 0;
+        }
 
         .wizard-input-group {
             margin-bottom: 25px;
@@ -684,7 +725,7 @@
         .toggle-switch {
             position: relative;
             width: 50px;
-            height: 26px;
+            height: 24px;
         }
 
         .toggle-switch input {
@@ -700,9 +741,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background-color: #888;
             transition: 0.4s;
-            border-radius: 26px;
+            border-radius: 24px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
         }
 
         .toggle-slider:before {
@@ -710,8 +752,8 @@
             content: "";
             height: 18px;
             width: 18px;
-            left: 4px;
-            bottom: 4px;
+            left: 3px;
+            bottom: 3px;
             background-color: white;
             transition: 0.4s;
             border-radius: 50%;
@@ -722,7 +764,7 @@
         }
 
         .toggle-switch input:checked + .toggle-slider:before {
-            transform: translateX(24px);
+            transform: translateX(26px);
         }
 
         .wizard-footer {
@@ -814,20 +856,42 @@
             align-items: center;
             gap: 0;
         }
-
-        .header img {
+        
+        .header-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr 150px;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .header-logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            justify-self: start;
+        }
+        
+        .header-logo {
             height: 50px;
             width: auto;
+            cursor: pointer;
         }
-
-        .header h1 {
+        
+        .header-title {
             font-size: 2.5em;
             margin: 0;
             font-weight: 500;
             color: #e0e0e0;
+            text-align: center;
+        }
+        
+        .header-menu {
+            display: flex;
+            justify-content: flex-end;
         }
 
-        [data-theme="light"] .header h1 {
+        [data-theme="light"] .header-title {
             color: #2d2d2d;
         }
 
@@ -854,6 +918,44 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             border-color: #ff6b35;
+        }
+        
+        /* Scroll to Top Button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .scroll-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+            background: #2a2a2a;
+            border-color: #ff6b35;
+        }
+        
+        .scroll-to-top svg {
+            width: 24px;
+            height: 24px;
+            stroke: #ffffff;
+            stroke-width: 3;
+            fill: none;
+        }
+        
+        .scroll-to-top.show {
+            display: flex;
         }
 
         .menu-overlay {
@@ -963,9 +1065,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #4a4a4a;
+            background-color: #888;
             transition: .3s;
             border-radius: 24px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
         }
 
         .menu-toggle-slider:before {
@@ -1452,6 +1555,53 @@
             background: rgba(255, 152, 0, 0.15);
             border-color: #ff9800;
         }
+        
+        /* Light mode adjustments for day checkboxes */
+        [data-theme="light"] .day-checkbox-label {
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+        }
+        
+        [data-theme="light"] .day-checkbox-label:hover {
+            background: rgba(0, 0, 0, 0.06);
+            border-color: rgba(255, 152, 0, 0.5);
+        }
+        
+        [data-theme="light"] .day-checkbox-label:has(input:checked) {
+            background: rgba(255, 152, 0, 0.12);
+            border-color: #e68a00;
+        }
+        
+        /* Recurring options box */
+        .recurring-options-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="light"] .recurring-options-box {
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+        }
+        
+        /* Important banner styling */
+        .important-banner {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--text-secondary);
+        }
+        
+        [data-theme="light"] .important-banner {
+            background: rgba(255, 152, 0, 0.15);
+            color: #4a4a4a;
+        }
+        
+        /* Schedule item row styling */
+        .schedule-item-row {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        [data-theme="light"] .schedule-item-row {
+            background: rgba(0, 0, 0, 0.03);
+        }
 
         .btn-remove {
             padding: 6px 12px;
@@ -1526,9 +1676,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background-color: #888;
             transition: 0.4s;
             border-radius: 24px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
         }
 
         .slider:before {
@@ -1847,10 +1998,28 @@
         }
 
         @media (max-width: 768px) {
-            /* PC Cards - stack vertically on mobile */
+            /* Body and container - full width for shadow visibility */
+            body {
+                padding: 0 !important;
+                align-items: flex-start !important;
+            }
+            
+            .container {
+                max-width: 100% !important;
+                width: 100% !important;
+                padding: 15px !important;
+                overflow: visible !important;
+            }
+            
+            /* PC Cards - stack vertically on mobile with proper padding */
+            .pc-grid {
+                padding: 0 5px !important;
+            }
+            
             .pc-card {
                 width: 100% !important;
                 max-width: 100% !important;
+                margin-bottom: 5px !important;
             }
             
             .schedule-form {
@@ -1881,37 +2050,55 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             
-            /* Icon selector in wizard - 4 columns on mobile */
-            .icon-selector {
-                grid-template-columns: repeat(4, 1fr) !important;
-            }
-            
-            /* Wizard radio options - stack vertically */
-            .wizard-radio-group {
-                grid-template-columns: 1fr !important;
-            }
-            
-            /* Color picker - single column on mobile */
-            .color-picker-group {
-                grid-template-columns: 1fr !important;
-            }
-            
             /* Day checkboxes - 2 columns on mobile */
             #day-of-week-selector > div {
                 grid-template-columns: repeat(2, 1fr) !important;
             }
             
+            /* ========== HEADER MOBILE FIXES ========== */
             .header {
                 flex-direction: column;
                 gap: 10px;
+                padding: 0 10px;
             }
             
-            .header h1 {
-                font-size: 1.8em;
+            /* ========== HEADER MOBILE - Logo centered, title below ========== */
+            .header-grid {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 8px !important;
+                position: relative !important;
             }
             
-            .header img {
-                height: 40px;
+            .header-logo-link {
+                justify-self: center !important;
+            }
+            
+            .header-logo {
+                height: 60px !important;
+            }
+            
+            .header-title {
+                font-size: 1.6em !important;
+                text-align: center !important;
+                order: 2 !important;
+            }
+            
+            .header-menu {
+                position: absolute !important;
+                top: 0 !important;
+                right: 0 !important;
+            }
+            
+            .hamburger-btn {
+                padding: 12px 14px !important;
+                font-size: 1.4em !important;
+            }
+            
+            .hamburger-btn svg {
+                width: 28px !important;
+                height: 28px !important;
             }
             
             .header-controls {
@@ -1924,16 +2111,437 @@
                 font-size: 0.85em;
             }
             
+            /* Scroll to top - mobile position */
+            .scroll-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+            
             /* Modal adjustments for mobile */
             .modal-content {
-                width: 90%;
-                max-width: 90%;
+                width: 95%;
+                max-width: 95%;
+                margin: 10px;
             }
             
             /* Button adjustments */
             .shortcut-btn, .btn-save, .btn-modal {
                 font-size: 0.9em;
                 padding: 10px 12px;
+            }
+            
+            /* ========== SCHEDULE FORM MOBILE ========== */
+            /* Prevent horizontal overflow only inside schedule sections */
+            .scheduled-section,
+            .schedule-form {
+                overflow-x: hidden !important;
+            }
+            
+            /* Date/Time and Condition - stack on mobile */
+            #datetime-condition-row {
+                grid-template-columns: 1fr !important;
+                overflow: hidden !important;
+            }
+            
+            #datetime-condition-row > div {
+                overflow: hidden !important;
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            
+            /* Prevent datetime input from overflowing */
+            .schedule-input {
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                width: 100% !important;
+            }
+            
+            input[type="datetime-local"],
+            input[type="datetime-local"].schedule-input,
+            #schedule-time {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                font-size: 14px !important;
+                box-sizing: border-box !important;
+                -webkit-appearance: none !important;
+                appearance: none !important;
+            }
+            
+            /* ========== WIZARD MOBILE FIXES ========== */
+            .setup-wizard {
+                padding: 0 !important;
+                align-items: stretch !important;
+                justify-content: stretch !important;
+            }
+            
+            .wizard-container {
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                height: 100vh !important;
+                max-height: 100vh !important;
+                border-radius: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                overflow: hidden !important;
+            }
+            
+            .wizard-header {
+                padding: 15px 15px 12px 15px !important;
+                border-radius: 0 !important;
+                flex-shrink: 0 !important;
+            }
+            
+            .wizard-header h1 {
+                font-size: 1.25em !important;
+            }
+            
+            .wizard-header p {
+                font-size: 0.8em !important;
+                margin-top: 4px !important;
+            }
+            
+            /* Progress bar - full width with connecting lines */
+            .wizard-progress {
+                padding: 12px 10px !important;
+                flex-shrink: 0 !important;
+                justify-content: space-between !important;
+                gap: 0 !important;
+                overflow: visible !important;
+            }
+            
+            .wizard-step-indicator {
+                flex: 1 1 0 !important;
+                min-width: 0 !important;
+                padding: 5px 2px !important;
+                position: relative !important;
+            }
+            
+            .wizard-step-indicator::before {
+                display: block !important;
+                content: '' !important;
+                position: absolute !important;
+                top: 50% !important;
+                left: 0 !important;
+                right: 0 !important;
+                height: 2px !important;
+                background: var(--border-color) !important;
+                transform: translateY(-50%) !important;
+                z-index: 0 !important;
+            }
+            
+            .wizard-step-indicator:first-child::before {
+                left: 50% !important;
+            }
+            
+            .wizard-step-indicator:last-child::before {
+                right: 50% !important;
+            }
+            
+            .wizard-step-number {
+                width: 32px !important;
+                height: 32px !important;
+                line-height: 1 !important;
+                font-size: 0.85em !important;
+                position: relative !important;
+                z-index: 1 !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                box-sizing: border-box !important;
+            }
+            
+            .wizard-step-label {
+                display: none !important;
+            }
+            
+            .wizard-body {
+                padding: 15px !important;
+                min-height: 0 !important;
+                max-height: none !important;
+                flex: 1 1 auto !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+            }
+            
+            .wizard-step {
+                padding: 0 !important;
+            }
+            
+            .wizard-step h2 {
+                font-size: 1.2em !important;
+                margin-bottom: 5px !important;
+            }
+            
+            .wizard-step p {
+                font-size: 0.85em !important;
+                margin-bottom: 12px !important;
+            }
+            
+            /* Step 1 mobile layout - image below text */
+            .step1-header {
+                position: static !important;
+                padding-right: 0 !important;
+                text-align: center !important;
+                min-height: auto !important;
+            }
+            
+            .step1-header h2 {
+                text-align: left !important;
+            }
+            
+            .step1-header p {
+                text-align: left !important;
+                margin-bottom: 15px !important;
+            }
+            
+            .step1-image {
+                position: static !important;
+                display: block !important;
+                max-width: 140px !important;
+                width: auto !important;
+                margin: 0 auto 15px auto !important;
+            }
+            
+            .step1-content {
+                margin-top: 0 !important;
+            }
+            
+            .wizard-input-group {
+                margin-bottom: 12px !important;
+            }
+            
+            .wizard-radio-group {
+                flex-direction: column !important;
+                gap: 10px !important;
+            }
+            
+            .wizard-radio-option {
+                padding: 12px !important;
+            }
+            
+            .wizard-radio-label {
+                font-size: 1em !important;
+            }
+            
+            .wizard-radio-desc {
+                font-size: 0.8em !important;
+            }
+            
+            .wizard-footer {
+                flex-shrink: 0 !important;
+                padding: 12px !important;
+                border-radius: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+            }
+            
+            .wizard-footer > button:first-child {
+                order: 2 !important;
+            }
+            
+            .wizard-footer > div {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+                width: 100% !important;
+                order: 1 !important;
+            }
+            
+            .wizard-footer button,
+            .wizard-btn {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 12px 16px !important;
+                font-size: 0.9em !important;
+                box-sizing: border-box !important;
+            }
+            
+            /* PC Config cards in wizard */
+            .pc-config-card {
+                padding: 12px !important;
+            }
+            
+            .pc-config-header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 8px !important;
+            }
+            
+            /* Icon selector - 6 per row, dynamic sizing, fill all space */
+            .icon-selector {
+                display: grid !important;
+                grid-template-columns: repeat(6, 1fr) !important;
+                gap: 4px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                overflow: hidden !important;
+                box-sizing: border-box !important;
+            }
+            
+            .icon-option {
+                width: 100% !important;
+                aspect-ratio: 1 / 1 !important;
+                height: auto !important;
+                padding: 3px !important;
+                margin: 0 !important;
+                min-height: unset !important;
+                font-size: 1.3em !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+            }
+            
+            .icon-option img {
+                max-width: 75% !important;
+                max-height: 75% !important;
+                width: auto !important;
+                height: auto !important;
+            }
+            
+            .icon-upload-box svg {
+                width: 20px !important;
+                height: 20px !important;
+            }
+            
+            /* Prevent wizard body overflow */
+            .wizard-body,
+            .wizard-step,
+            .wizard-input-group,
+            .pc-config-card {
+                max-width: 100% !important;
+                overflow-x: hidden !important;
+            }
+            
+            /* Appearance - color pickers side by side */
+            #color-customization-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px !important;
+            }
+            
+            #color-customization-grid h3 {
+                font-size: 0.9em !important;
+                margin-bottom: 10px !important;
+            }
+            
+            #color-customization-grid .color-picker {
+                height: 35px !important;
+            }
+            
+            #color-customization-grid label {
+                font-size: 0.75em !important;
+            }
+            
+            /* Appearance theme grid */
+            .preset-themes {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 8px !important;
+            }
+            
+            .theme-preset {
+                padding: 10px 6px !important;
+            }
+            
+            /* Feature toggles - fix alignment */
+            .feature-toggle-list {
+                grid-template-columns: 1fr !important;
+                gap: 8px !important;
+            }
+            
+            .feature-toggle {
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                padding: 12px !important;
+            }
+            
+            .feature-toggle span {
+                flex: 1 !important;
+            }
+            
+            .feature-toggle .toggle-switch {
+                flex-shrink: 0 !important;
+            }
+            
+            /* Color picker items */
+            .color-picker-group {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Confirmation dialog mobile */
+            .confirm-box {
+                width: 90%;
+                padding: 20px;
+            }
+            
+            /* Review step features grid - single column on mobile */
+            .review-features-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .header-logo {
+                height: 50px !important;
+            }
+            
+            .header-title {
+                font-size: 1.3em !important;
+            }
+            
+            .hamburger-btn {
+                padding: 10px 12px !important;
+            }
+            
+            .hamburger-btn svg {
+                width: 24px !important;
+                height: 24px !important;
+            }
+            
+            .shortcuts-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            
+            .wizard-step-label {
+                display: none !important;
+            }
+            
+            .wizard-step-indicator {
+                min-width: 40px;
+            }
+            
+            .wizard-header h1 {
+                font-size: 1.1em;
+            }
+            
+            .wizard-step h2 {
+                font-size: 1.1em;
+            }
+            
+            /* Icon selector - keep 6 columns, just smaller icons */
+            .icon-option {
+                font-size: 1.2em !important;
+            }
+            
+            /* Theme presets - still 2 columns but smaller */
+            .preset-themes {
+                gap: 8px !important;
+            }
+            
+            .theme-preset {
+                padding: 10px 6px !important;
+            }
+            
+            .theme-preset span[style*="font-size: 2em"] {
+                font-size: 1.3em !important;
+            }
+            
+            .theme-preset div[style*="font-weight: 600"] {
+                font-size: 0.75em !important;
             }
         }
 
@@ -2202,12 +2810,12 @@
 
     <div class="container">
         <div class="header">
-            <div style="display: grid; grid-template-columns: 150px 1fr 150px; align-items: center; width: 100%; margin-bottom: 15px;">
-                <a href="/" style="display: flex; align-items: center; text-decoration: none; justify-self: start;">
-                    <img src="/logo.png" alt="PiKVM" style="cursor: pointer;">
+            <div class="header-grid">
+                <a href="/" class="header-logo-link">
+                    <img src="/logo.png" alt="PiKVM" class="header-logo">
                 </a>
-                <h1 style="margin: 0; text-align: center;">Control Dashboard</h1>
-                <div style="display: flex; justify-content: flex-end;">
+                <h1 class="header-title">Control Dashboard</h1>
+                <div class="header-menu">
                     <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMenu()" title="Menu">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -2252,7 +2860,7 @@
         <!-- NEW: Scheduled Actions Section -->
         <div class="scheduled-section advanced-feature" id="scheduled-section">
             <div class="scheduled-title">⏰ Scheduled Actions</div>
-            <div style="background: rgba(255, 152, 0, 0.1); border-left: 3px solid #ff9800; padding: 12px; margin-bottom: 16px; border-radius: 4px; font-size: 13px; color: var(--text-secondary);">
+            <div class="important-banner" style="border-left: 3px solid #ff9800; padding: 12px; margin-bottom: 16px; border-radius: 4px; font-size: 13px;">
                 ⚠️ <strong>Important:</strong> PiKVM must be running continuously for scheduled actions to execute. If PiKVM is powered off when an action is scheduled to trigger, that action will be missed.
             </div>
             <div class="schedule-form">
@@ -2288,7 +2896,7 @@
                 </div>
                 
                 <!-- Date/Time and Condition on same row -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                <div id="datetime-condition-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
                     <div>
                         <label style="display: block; margin-bottom: 6px; font-size: 13px; color: var(--text-secondary);">📅 Date & Time</label>
                         <input type="datetime-local" class="schedule-input" id="schedule-time" style="margin: 0; width: 100%;">
@@ -2312,7 +2920,7 @@
                     </label>
                 </div>
                 
-                <div id="recurring-options" style="display: none; margin-bottom: 12px; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div id="recurring-options" class="recurring-options-box" style="display: none; margin-bottom: 12px; padding: 12px; border-radius: 6px;">
                     <div style="display: grid; grid-template-columns: 200px 1fr; gap: 16px; align-items: start;">
                         <!-- Left column: Frequency -->
                         <div>
@@ -2488,8 +3096,8 @@
                     <input type="text" class="config-input" id="pikvm-username" placeholder="Username" value="admin" autocomplete="off">
                     <input type="password" class="config-input" id="pikvm-password" placeholder="Password" value="" autocomplete="new-password">
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn-save" onclick="saveConfig()" style="flex: 1; min-width: 140px;">💾 Update Credentials</button>
-                        <button class="btn-clear" onclick="clearConfig()" style="flex: 1; min-width: 140px;">🗑️ Clear Credentials</button>
+                        <button class="btn-save" onclick="saveConfig()" style="flex: 1; min-width: 120px;">💾 Update</button>
+                        <button class="btn-clear" onclick="clearConfig()" style="flex: 1; min-width: 120px;">🗑️ Clear</button>
                     </div>
                 </div>
             </details>
@@ -2901,9 +3509,14 @@
             await loadActionLog();
             await loadScheduledActions();
             
-            // Start monitoring
-            checkAllStatus();
-            updateUptime();
+            // Immediate status check (with tiny delay to ensure DOM is ready)
+            setTimeout(() => {
+                console.log('Running immediate status check...');
+                checkAllStatus();
+                updateUptime();
+            }, 100);
+            
+            // Start regular monitoring intervals
             startStatusChecking();
             startScheduleChecking();
             startIdleMonitoring();
@@ -2950,6 +3563,22 @@
             document.documentElement.style.setProperty('--main-text-color', themeColors.textColor);
             document.documentElement.style.setProperty('--theme-text-color', themeColors.textColor);
             
+            // Override text and border CSS variables so inline var() styles pick up theme colors
+            document.documentElement.style.setProperty('--text-primary', themeColors.textColor);
+            document.documentElement.style.setProperty('--text-secondary', themeColors.textColor);
+            document.documentElement.style.setProperty('--bg-tertiary', themeColors.inputBg);
+            document.documentElement.style.setProperty('--bg-secondary', themeColors.cardBg);
+            
+            // Compute a visible border color (darken inputBg by blending toward textColor)
+            const computeBorder = (text, bg) => {
+                const t = parseInt(text.slice(1), 16), b = parseInt(bg.slice(1), 16);
+                const r = Math.round(((t>>16)&0xFF)*0.35 + ((b>>16)&0xFF)*0.65);
+                const g = Math.round(((t>>8)&0xFF)*0.35 + ((b>>8)&0xFF)*0.65);
+                const bl = Math.round((t&0xFF)*0.35 + (b&0xFF)*0.65);
+                return `#${((r<<16)|(g<<8)|bl).toString(16).padStart(6,'0')}`;
+            };
+            document.documentElement.style.setProperty('--border-color', computeBorder(themeColors.textColor, themeColors.inputBg));
+            
             // Apply background
             if (appearance.backgroundImage) {
                 document.body.style.backgroundImage = `url(${appearance.backgroundImage})`;
@@ -2962,13 +3591,13 @@
             }
             
             // Apply logo
-            const logoImg = document.querySelector('.header img');
+            const logoImg = document.querySelector('.header-logo');
             if (logoImg && appearance.logo) {
                 logoImg.src = appearance.logo;
             }
             
             // Apply title
-            const titleEl = document.querySelector('.header h1');
+            const titleEl = document.querySelector('.header-title');
             if (titleEl && appearance.dashboardTitle) {
                 titleEl.textContent = appearance.dashboardTitle;
             }
@@ -2978,7 +3607,7 @@
             style.id = 'theme-colors';
             style.textContent = `
                 /* Header styling */
-                .header h1 {
+                .header-title {
                     color: ${themeColors.headerColor || themeColors.cardTitle} !important;
                 }
                 
@@ -3117,6 +3746,41 @@
                     color: ${themeColors.textColor} !important;
                 }
                 
+                /* Secondary text elements that were being missed */
+                .led-indicator,
+                .led-indicator span,
+                .important-banner,
+                .important-banner strong,
+                .btn-clear,
+                .config-section p,
+                #schedule-empty-message,
+                .recurring-options-box label,
+                .schedule-item-row div,
+                [style*="text-secondary"] {
+                    color: ${themeColors.textColor} !important;
+                }
+                
+                /* Border colors for boxes */
+                .status-indicator,
+                .recurring-options-box,
+                .schedule-input,
+                .config-input,
+                .pc-selector {
+                    border-color: ${computeBorder(themeColors.textColor, themeColors.inputBg)} !important;
+                }
+                
+                /* Day checkbox - use computed border normally, orange when checked */
+                .day-checkbox-label {
+                    border-color: ${computeBorder(themeColors.textColor, themeColors.inputBg)} !important;
+                }
+                .day-checkbox-label:has(input:checked) {
+                    border-color: #ff9800 !important;
+                    background: rgba(255, 152, 0, 0.15) !important;
+                }
+                .day-checkbox-label:hover {
+                    border-color: rgba(255, 152, 0, 0.5) !important;
+                }
+                
                 /* Select dropdown options */
                 .schedule-input option,
                 .pc-selector option,
@@ -3150,14 +3814,84 @@
                 }
                 .menu-toggle-slider {
                     background-color: ${themeColors.inputBg} !important;
+                    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3) !important;
                 }
                 .menu-toggle input:checked + .menu-toggle-slider {
                     background-color: #ff8c00 !important;
+                    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3) !important;
+                }
+                .slider {
+                    background-color: ${themeColors.inputBg} !important;
+                    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3) !important;
+                }
+                input:checked + .slider {
+                    background-color: #ff8c00 !important;
+                    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3) !important;
                 }
                 
                 /* Add Schedule button - solid orange */
                 .btn-save {
                     background: #ff8c00 !important;
+                }
+                
+                /* Wizard/Settings/Login/Modals: always dark mode - override theme colors */
+                .setup-wizard,
+                .setup-wizard h3,
+                .setup-wizard p,
+                .setup-wizard label,
+                .setup-wizard small,
+                .setup-wizard span,
+                .setup-wizard div,
+                .setup-wizard .wizard-label,
+                .setup-wizard .wizard-radio-label,
+                .setup-wizard .wizard-radio-desc,
+                .setup-wizard .pc-config-header h3,
+                .setup-wizard .wizard-step-label,
+                .setup-wizard .feature-toggle span,
+                .setup-wizard .feature-toggle label,
+                .login-container,
+                .login-container *,
+                .modal,
+                .modal * {
+                    color: #e0e0e0 !important;
+                }
+                .setup-wizard .pc-config-number,
+                .setup-wizard .wizard-btn-primary,
+                .setup-wizard .wizard-step-number {
+                    color: white !important;
+                }
+                .setup-wizard .wizard-container,
+                .setup-wizard .wizard-body {
+                    background: #2a2a2a !important;
+                }
+                .setup-wizard .wizard-header {
+                    background: #1e1e1e !important;
+                }
+                .setup-wizard .wizard-footer {
+                    background: #1e1e1e !important;
+                }
+                .setup-wizard .pc-config-card {
+                    background: #1e1e1e !important;
+                    border-color: #3a3a3a !important;
+                }
+                .setup-wizard .wizard-input,
+                .setup-wizard .wizard-radio-option {
+                    background: #1e1e1e !important;
+                    border-color: #3a3a3a !important;
+                    color: #e0e0e0 !important;
+                }
+                .setup-wizard select option {
+                    background: #1e1e1e !important;
+                    color: #e0e0e0 !important;
+                }
+                .setup-wizard .wizard-radio-option.selected {
+                    border-color: #ff6b35 !important;
+                }
+                .setup-wizard .icon-option {
+                    border-color: #3a3a3a !important;
+                }
+                .setup-wizard .icon-option.selected {
+                    border-color: #ff6b35 !important;
                 }
             `;
             
@@ -3185,7 +3919,7 @@
         function createPCCard(pc, hasSwitch) {
             const card = document.createElement('div');
             card.className = 'pc-card';
-            card.id = `pc-card-${pc.id}`;
+            card.id = `pc-card-${pc.port}`;
             
             // Determine icon display (emoji or image)
             let iconHTML = pc.icon;
@@ -3203,27 +3937,27 @@
                     <div class="status-indicators">
                         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
                             <div style="display: flex; align-items: center; gap: 10px;">
-                                <div class="status-dot checking" id="status-dot-${pc.id}"></div>
-                                <div class="status-text" id="status-text-${pc.id}">Checking...</div>
+                                <div class="status-dot checking" id="status-dot-${pc.port}"></div>
+                                <div class="status-text" id="status-text-${pc.port}">Checking...</div>
                             </div>
                             <div class="led-indicator" style="margin-left: auto; text-align: right;">
                                 <span>HDD Activity</span>
-                                <div class="led-dot" id="hdd-led-${pc.id}"></div>
+                                <div class="led-dot" id="hdd-led-${pc.port}"></div>
                             </div>
                             </div>
                         </div>
-                        <div class="countdown" id="uptime-${pc.id}" style="color: var(--text-secondary); font-size: 0.85em; margin-bottom: 4px;">Uptime: --</div>
+                        <div class="countdown" id="uptime-${pc.port}" style="color: var(--text-secondary); font-size: 0.85em; margin-bottom: 4px;">Uptime: --</div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div class="countdown" id="countdown-${pc.id}" style="margin: 0;"></div>
+                            <div class="countdown" id="countdown-${pc.port}" style="margin: 0;"></div>
                             ${hasSwitch ? `<div style="color: var(--text-secondary); font-size: 0.85em; font-weight: 500;">Port ${pc.port}</div>` : ''}
                         </div>
                     </div>
                 </div>
                 
                 <div class="button-grid">
-                    <button class="btn btn-on" id="btn-on-${pc.id}" onclick="powerOn(${pc.port}, '${pc.name}')">Power On</button>
-                    <button class="btn btn-off" id="btn-off-${pc.id}" onclick="showShutdownModal(${pc.port}, '${pc.name}')">Power Off</button>
-                    <button class="btn btn-reset" id="btn-reset-${pc.id}" onclick="showResetModal(${pc.port}, '${pc.name}')">Reset</button>
+                    <button class="btn btn-on" id="btn-on-${pc.port}" onclick="powerOn(${pc.port}, '${pc.name}')">Power On</button>
+                    <button class="btn btn-off" id="btn-off-${pc.port}" onclick="showShutdownModal(${pc.port}, '${pc.name}')">Power Off</button>
+                    <button class="btn btn-reset" id="btn-reset-${pc.port}" onclick="showResetModal(${pc.port}, '${pc.name}')">Reset</button>
                 </div>
             `;
             
@@ -3291,14 +4025,13 @@
             const body = document.getElementById('wizardBody');
             body.innerHTML = `
                 <div class="wizard-step active" id="step1">
-                    <div style="position: relative;">
-                        <img src="/pikvm-switch.webp" alt="PiKVM ATX Switch" 
-                             style="position: absolute; top: -10px; right: 0; max-width: 200px; width: 35%; border-radius: 8px;">
+                    <div class="step1-header">
                         <h2>Hardware Configuration</h2>
                         <p>Tell us about your PiKVM hardware setup</p>
+                        <img src="/pikvm-switch.webp" alt="PiKVM ATX Switch" class="step1-image">
                     </div>
 
-                    <div class="wizard-input-group" style="margin-top: 150px;">
+                    <div class="wizard-input-group step1-content">
                         <label class="wizard-label">Do you have one or more PiKVM ATX switches installed?</label>
                         <div class="wizard-radio-group">
                             <div class="wizard-radio-option ${wizardConfig.hardware?.hasSwitch === true ? 'selected' : ''}" onclick="selectSwitch(true)">
@@ -3768,7 +4501,7 @@
                     <!-- Color Pickers at Top - Two Column Layout -->
                     <div class="wizard-input-group">
                         <label class="wizard-label">Color Customization</label>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div id="color-customization-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <!-- Light Mode Column -->
                             <div>
                                 <h3 style="font-size: 1.1em; margin-bottom: 15px; color: var(--text-primary);">☀️ Light Mode</h3>
@@ -4215,7 +4948,7 @@
                     
                     <div style="background: var(--bg-secondary); padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b35;">
                         <h3 style="margin: 0 0 10px 0; color: #ff6b35;">✨ Features Enabled</h3>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                        <div class="review-features-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
                             ${Object.entries(wizardConfig.features).filter(([k,v]) => v).map(([key,val]) => `
                                 <div style="padding: 6px 10px; background: var(--bg-tertiary); border-radius: 6px; font-size: 0.9em;">
                                     ✓ ${key.replace(/([A-Z])/g, ' $1').trim().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
@@ -4817,22 +5550,33 @@
 
             const pcName = port === '0' ? 'MediaServer' : 'GamingPC';
             
-            // Map shortcuts to PiKVM key sequences
+            // Map shortcuts to PiKVM key codes (W3C KeyboardEvent.code values)
+            // API endpoint: POST /api/hid/events/send_shortcut?keys=Key1,Key2,...
             const shortcuts = {
-                'ctrl-alt-del': 'ControlLeft+AltLeft+Delete',
-                'ctrl-alt-esc': 'ControlLeft+AltLeft+Escape',
-                'alt-f4': 'AltLeft+F4',
+                'ctrl-alt-del': 'ControlLeft,AltLeft,Delete',
+                'ctrl-alt-esc': 'ControlLeft,AltLeft,Escape',
+                'alt-f4': 'AltLeft,F4',
                 'win': 'MetaLeft',
-                'win-r': 'MetaLeft+KeyR',
-                'win-l': 'MetaLeft+KeyL'
+                'win-r': 'MetaLeft,KeyR',
+                'win-l': 'MetaLeft,KeyL'
             };
 
             const keySequence = shortcuts[shortcut];
             if (!keySequence) return;
 
+            const config = window.dashboardConfig;
+            const hasSwitch = config && config.hardware && config.hardware.hasSwitch;
+
             try {
-                // Send keyboard shortcut via HID keyboard API
-                await makeRequest(`/api/hid/print?limit=0&text=${encodeURIComponent(keySequence)}`, 'POST');
+                // For Switch setups, switch to the target port first
+                if (hasSwitch) {
+                    await makeRequest(`/api/switch/set_active?port=${port}`, 'POST');
+                    // Brief delay to let the switch complete
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+                
+                // Send keyboard shortcut via HID events API
+                await makeRequest(`/api/hid/events/send_shortcut?keys=${encodeURIComponent(keySequence)}`, 'POST');
                 showToast(`Sent ${shortcut.toUpperCase()} to ${pcName}`, 'success');
                 playSound('success');
                 logAction(pcName, `Keyboard shortcut: ${shortcut.toUpperCase()}`, 'shortcut');
@@ -5420,7 +6164,7 @@
                     `<span style="background: rgba(255, 152, 0, 0.2); color: #ff9800; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-left: 8px;">🔄 ${schedule.frequency}</span>` : '';
                 
                 html += `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.03); border-radius: 6px;">
+                    <div class="schedule-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 6px;">
                         <div>
                             <strong style="color: var(--text-primary);">${schedule.pcName}</strong>${recurringBadge}
                             <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">${timeStr} - ${actionText}</div>
@@ -6312,52 +7056,68 @@
         }
 
         function checkAllStatus() {
-            checkStatus(0);
-            checkStatus(1);
+            // Check all configured PCs
+            const config = window.dashboardConfig;
+            if (config && config.pcs) {
+                config.pcs.forEach(pc => {
+                    checkStatus(pc.port);
+                });
+            } else {
+                // Fallback for backwards compatibility
+                checkStatus(0);
+                checkStatus(1);
+            }
             nextCheckTime = Date.now() + 30000;
         }
 
         async function updateUptime() {
             const uptimeData = await apiRequest('/uptime');
-            if (uptimeData) {
-                for (let port = 0; port < 2; port++) {
+            const config = window.dashboardConfig;
+            
+            if (uptimeData && config && config.pcs) {
+                config.pcs.forEach(pc => {
+                    const port = pc.port;
                     const portData = uptimeData[port.toString()];
                     const uptimeEl = document.getElementById(`uptime-${port}`);
                     
-                    if (portData && portData.currentUptime > 0) {
-                        const seconds = portData.currentUptime;
-                        const days = Math.floor(seconds / 86400);
-                        const hours = Math.floor((seconds % 86400) / 3600);
-                        const minutes = Math.floor((seconds % 3600) / 60);
-                        
-                        let uptimeStr = 'Uptime: ';
-                        if (days > 0) uptimeStr += `${days}d `;
-                        if (hours > 0 || days > 0) uptimeStr += `${hours}h `;
-                        uptimeStr += `${minutes}m`;
-                        
-                        uptimeEl.textContent = uptimeStr;
-                    } else {
-                        uptimeEl.textContent = 'Uptime: --';
+                    if (uptimeEl) {
+                        if (portData && portData.currentUptime > 0) {
+                            const seconds = portData.currentUptime;
+                            const days = Math.floor(seconds / 86400);
+                            const hours = Math.floor((seconds % 86400) / 3600);
+                            const minutes = Math.floor((seconds % 3600) / 60);
+                            
+                            let uptimeStr = 'Uptime: ';
+                            if (days > 0) uptimeStr += `${days}d `;
+                            if (hours > 0 || days > 0) uptimeStr += `${hours}h `;
+                            uptimeStr += `${minutes}m`;
+                            
+                            uptimeEl.textContent = uptimeStr;
+                        } else {
+                            uptimeEl.textContent = 'Uptime: --';
+                        }
                     }
-                }
+                });
             }
         }
 
         async function updateHDDStatus() {
             const data = await makeRequest('/api/switch', 'GET');
+            const config = window.dashboardConfig;
             
-            if (!data) return;
+            if (!data || !config || !config.pcs) return;
             
             const hddArray = data.result?.atx?.leds?.hdd;
             
-            for (let port = 0; port < 2; port++) {
+            config.pcs.forEach(pc => {
+                const port = pc.port;
                 const hddLed = document.getElementById(`hdd-led-${port}`);
                 const hddActive = hddArray?.[port] === true;
                 
                 if (hddLed) {
                     hddLed.className = hddActive ? 'led-dot active' : 'led-dot';
                 }
-            }
+            });
         }
 
         function startStatusChecking() {
@@ -6380,6 +7140,37 @@
             nextCheckTime = Date.now() + 30000;
             countdownInterval = setInterval(updateCountdown, 1000);
         }
+        
+        // Scroll to Top functionality
+        function initScrollToTop() {
+            const scrollBtn = document.getElementById('scrollToTopBtn');
+            if (!scrollBtn) return;
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    scrollBtn.classList.add('show');
+                } else {
+                    scrollBtn.classList.remove('show');
+                }
+            });
+            
+            scrollBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+        
+        // Initialize scroll to top when DOM is ready
+        document.addEventListener('DOMContentLoaded', initScrollToTop);
     </script>
+    
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTopBtn" title="Scroll to top">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="18 15 12 9 6 15" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
 </body>
 </html>

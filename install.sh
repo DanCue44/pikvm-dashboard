@@ -196,7 +196,7 @@ install_dashboard() {
     # Check if running interactively
     if [ -t 0 ]; then
         # Interactive mode - ask for confirmation
-        read -p "Do you want to continue? (y/n) " -n 1 -r
+        read -p "Do you want to continue? (y/n) " -r
         echo
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
             echo -e "${YELLOW}Installation cancelled.${NC}"
@@ -592,7 +592,7 @@ if [ "$existing" -gt 0 ]; then
             ;;
         2)
             echo -e "${YELLOW}WARNING: This will delete all configuration, logs, and preferences!${NC}"
-            read -p "Are you sure? (y/n) " -n 1 -r
+            read -p "Are you sure? (y/n) " -r
             echo
             if [[ $REPLY =~ ^[Yy]$ ]]; then
                 print_step "Making filesystem writable..."
@@ -625,4 +625,3 @@ else
 fi
 
 exit 0
-
