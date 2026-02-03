@@ -11,16 +11,11 @@
 
 SSH into your PiKVM and run:
 
-**For Fresh Install** (interactive - required for entering credentials):
-```bash
-curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh
-sudo bash install.sh
-```
-
-**For Updates** (non-interactive - uses existing credentials):
 ```bash
 curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
 ```
+
+The installer will prompt you for credentials on first install, or use saved credentials for updates.
 
 ### Access the Dashboard
 
@@ -299,5 +294,3 @@ Thank you for helping test the PiKVM Dashboard! Your feedback is invaluable in m
 If you find this project useful, consider supporting its development:
 - ⭐ Star the repo on GitHub
 - 💖 Support on Patreon: https://www.patreon.com/c/DanCue44
-
-

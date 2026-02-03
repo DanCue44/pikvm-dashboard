@@ -3,12 +3,8 @@
 # PiKVM Control Dashboard - Automated Installer
 # This script installs the complete dashboard including backend service
 #
-# Usage for UPDATES (existing install):
+# Usage:
 #   curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash
-#
-# Usage for FRESH INSTALL (requires interactive mode for credentials):
-#   curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh
-#   sudo bash install.sh
 #
 
 set -e  # Exit on error
@@ -40,6 +36,12 @@ DATA_PATH="/var/lib/pikvm-dashboard"
 BACKUP_PATH="/var/lib/pikvm-dashboard/backup"
 
 # ============ HELPER FUNCTIONS ============
+
+# Detect if a terminal is available for user prompts (works even when piped via curl)
+HAS_TTY=false
+if [ -e /dev/tty ]; then
+    HAS_TTY=true
+fi
 
 print_header() {
     echo -e "${BLUE}"
@@ -109,7 +111,7 @@ uninstall_dashboard() {
     
     print_warning "This will remove ALL dashboard files and data."
     echo
-    read -p "Are you sure you want to uninstall? (yes/no): " confirm
+    read -p "Are you sure you want to uninstall? (yes/no): " confirm < /dev/tty
     
     if [ "$confirm" != "yes" ]; then
         echo -e "${CYAN}Uninstallation cancelled.${NC}"
@@ -140,7 +142,7 @@ uninstall_dashboard() {
     
     # Ask about data
     echo
-    read -p "Do you want to remove all data (configs, logs, schedules, icons, etc.)? (yes/no): " remove_data
+    read -p "Do you want to remove all data (configs, logs, schedules, icons, etc.)? (yes/no): " remove_data < /dev/tty
     
     if [ "$remove_data" = "yes" ]; then
         rm -rf "$DATA_PATH"
@@ -168,7 +170,7 @@ backup_existing_data() {
         local backup_file="$BACKUP_PATH/backup-$(date +%Y%m%d-%H%M%S).tar.gz"
         
         tar -czf "$backup_file" -C "$DATA_PATH" \
-            action_log.json preferences.json schedules.json uptime.json config.json 2>/dev/null || true
+            action_log.json preferences.json schedules.json uptime.json config.json .credentials 2>/dev/null || true
         
         if [ -f "$backup_file" ]; then
             print_success "Backup created: $backup_file"
@@ -194,9 +196,9 @@ install_dashboard() {
     echo
     
     # Check if running interactively
-    if [ -t 0 ]; then
+    if [ "$HAS_TTY" = true ]; then
         # Interactive mode - ask for confirmation
-        read -p "Do you want to continue? (y/n) " -r
+        read -p "Do you want to continue? (y/n) " -r < /dev/tty
         echo
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
             echo -e "${YELLOW}Installation cancelled.${NC}"
@@ -209,36 +211,59 @@ install_dashboard() {
     
     echo
     
-    # Check for existing credentials in config.json
-    EXISTING_CONFIG="$DATA_PATH/config.json"
+    # Check for existing credentials from multiple sources
+    CREDS_FILE="$DATA_PATH/.credentials"
     CREDS_VALID=false
     
-    if [ -f "$EXISTING_CONFIG" ]; then
-        # Try to extract existing credentials
-        PIKVM_USER=$(grep -o '"username": *"[^"]*"' "$EXISTING_CONFIG" 2>/dev/null | head -1 | cut -d'"' -f4)
-        PIKVM_PASS=$(grep -o '"password": *"[^"]*"' "$EXISTING_CONFIG" 2>/dev/null | head -1 | cut -d'"' -f4)
+    # Source 1: Dedicated credentials file (created by previous installs)
+    if [ "$CREDS_VALID" = false ] && [ -f "$CREDS_FILE" ]; then
+        PIKVM_USER=$(grep -o '"username": *"[^"]*"' "$CREDS_FILE" 2>/dev/null | head -1 | cut -d'"' -f4)
+        PIKVM_PASS=$(grep -o '"password": *"[^"]*"' "$CREDS_FILE" 2>/dev/null | head -1 | cut -d'"' -f4)
         
         if [ -n "$PIKVM_USER" ] && [ -n "$PIKVM_PASS" ]; then
-            echo -e "${CYAN}Found existing credentials. Verifying...${NC}"
+            echo -e "${CYAN}Found saved credentials. Verifying...${NC}"
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -u "${PIKVM_USER}:${PIKVM_PASS}" https://localhost/api/auth/check -k 2>/dev/null)
+            
+            if [ "$HTTP_CODE" = "200" ]; then
+                echo -e "${GREEN}✓ Saved credentials valid${NC}"
+                CREDS_VALID=true
+            else
+                echo -e "${YELLOW}⚠ Saved credentials invalid${NC}"
+            fi
+        fi
+    fi
+    
+    # Source 2: Extract from existing installed HTML file
+    if [ "$CREDS_VALID" = false ] && [ -f "$DASHBOARD_PATH" ]; then
+        PIKVM_USER=$(grep -o "EMBEDDED_USERNAME = '[^']*'" "$DASHBOARD_PATH" 2>/dev/null | head -1 | cut -d"'" -f2)
+        PIKVM_PASS=$(grep -o "EMBEDDED_PASSWORD = '[^']*'" "$DASHBOARD_PATH" 2>/dev/null | head -1 | cut -d"'" -f2)
+        
+        # Skip if still has placeholder values
+        if [ -n "$PIKVM_USER" ] && [ "$PIKVM_USER" != "PIKVM_USERNAME_PLACEHOLDER" ] && \
+           [ -n "$PIKVM_PASS" ] && [ "$PIKVM_PASS" != "PIKVM_PASSWORD_PLACEHOLDER" ]; then
+            echo -e "${CYAN}Found credentials in existing dashboard. Verifying...${NC}"
             HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -u "${PIKVM_USER}:${PIKVM_PASS}" https://localhost/api/auth/check -k 2>/dev/null)
             
             if [ "$HTTP_CODE" = "200" ]; then
                 echo -e "${GREEN}✓ Existing credentials valid${NC}"
                 CREDS_VALID=true
+                # Save to credentials file for future updates
+                mkdir -p "$DATA_PATH"
+                echo "{\"username\": \"$PIKVM_USER\", \"password\": \"$PIKVM_PASS\"}" > "$CREDS_FILE"
+                chmod 600 "$CREDS_FILE"
             else
-                echo -e "${YELLOW}⚠ Existing credentials invalid, need new ones${NC}"
+                echo -e "${YELLOW}⚠ Existing credentials invalid${NC}"
             fi
         fi
     fi
     
-    # If no valid credentials and non-interactive, fail gracefully
-    if [ "$CREDS_VALID" = false ] && [ ! -t 0 ]; then
+    # If no valid credentials and no terminal available, fail gracefully
+    if [ "$CREDS_VALID" = false ] && [ "$HAS_TTY" != true ]; then
         echo
-        echo -e "${RED}ERROR: Fresh install requires interactive mode to enter credentials.${NC}"
+        echo -e "${RED}ERROR: No saved credentials found and no terminal available for input.${NC}"
         echo
-        echo "Please run the installer interactively:"
-        echo "  curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh"
-        echo "  sudo bash install.sh"
+        echo "Please run the installer from an SSH session or terminal:"
+        echo "  curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh | sudo bash"
         echo
         exit 1
     fi
@@ -251,10 +276,10 @@ install_dashboard() {
         
         # Loop until credentials are valid
         while [ "$CREDS_VALID" = false ]; do
-            read -p "Enter PiKVM username (default: admin): " PIKVM_USER
+            read -p "Enter PiKVM username (default: admin): " PIKVM_USER < /dev/tty
             PIKVM_USER=${PIKVM_USER:-admin}
             
-            read -sp "Enter PiKVM password: " PIKVM_PASS
+            read -sp "Enter PiKVM password: " PIKVM_PASS < /dev/tty
             echo
             
             if [ -z "$PIKVM_PASS" ]; then
@@ -269,6 +294,10 @@ install_dashboard() {
             if [ "$HTTP_CODE" = "200" ]; then
                 echo -e "${GREEN}✓ Credentials valid${NC}"
                 CREDS_VALID=true
+                # Save credentials for future updates
+                mkdir -p "$DATA_PATH"
+                echo "{\"username\": \"$PIKVM_USER\", \"password\": \"$PIKVM_PASS\"}" > "$CREDS_FILE"
+                chmod 600 "$CREDS_FILE"
             else
                 echo -e "${RED}✗ Authentication failed (HTTP $HTTP_CODE)${NC}"
                 echo -e "${YELLOW}Please try again.${NC}"
@@ -567,7 +596,7 @@ if [ "$existing" -gt 0 ]; then
     echo
     
     # Check if running interactively (stdin is a terminal)
-    if [ -t 0 ]; then
+    if [ "$HAS_TTY" = true ]; then
         # Interactive mode - show menu
         echo "What would you like to do?"
         echo "  1) Reinstall (update files, keep data)"
@@ -575,10 +604,10 @@ if [ "$existing" -gt 0 ]; then
         echo "  3) Uninstall (remove everything)"
         echo "  4) Cancel"
         echo
-        read -p "Enter your choice (1-4): " choice
+        read -p "Enter your choice (1-4): " choice < /dev/tty
     else
-        # Non-interactive mode (piped) - default to reinstall
-        echo -e "${CYAN}Non-interactive mode detected. Defaulting to reinstall (update files, keep data)...${NC}"
+        # No terminal available (e.g., cron job) - default to reinstall
+        echo -e "${CYAN}No terminal detected. Defaulting to reinstall (update files, keep data)...${NC}"
         echo
         choice=1
     fi
@@ -592,7 +621,7 @@ if [ "$existing" -gt 0 ]; then
             ;;
         2)
             echo -e "${YELLOW}WARNING: This will delete all configuration, logs, and preferences!${NC}"
-            read -p "Are you sure? (y/n) " -r
+            read -p "Are you sure? (y/n) " -r < /dev/tty
             echo
             if [[ $REPLY =~ ^[Yy]$ ]]; then
                 print_step "Making filesystem writable..."
