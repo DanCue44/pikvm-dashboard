@@ -23,6 +23,17 @@ A powerful, customizable web dashboard for managing multiple PCs through your Pi
 
 ## 📦 Installation
 
+### Quick Start
+
+SSH into your PiKVM and run:
+
+```bash
+curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh
+sudo bash install.sh
+```
+
+The installer will guide you through entering your PiKVM credentials and configuring the dashboard.
+
 ### Update Existing Install
 
 If you already have the dashboard installed, you can update with a single command:
@@ -33,14 +44,7 @@ curl -sSL https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/instal
 
 This will update the files while keeping your settings and data.
 
-### Fresh Install
-
-For a new installation, run interactively (required for entering credentials):
-
-```bash
-curl -O https://raw.githubusercontent.com/DanCue44/pikvm-dashboard/main/install.sh
-sudo bash install.sh
-```
+> **Note**: The one-liner (`curl | sudo bash`) only works for **updates** where credentials are already saved. For fresh installs, use the interactive two-step command above.
 
 ## 📚 Documentation
 
@@ -173,6 +177,3 @@ MIT License - See [LICENSE](LICENSE) file for details.
 ---
 
 Made with ❤️ by [DanCue44](https://github.com/DanCue44)
-
-
-
